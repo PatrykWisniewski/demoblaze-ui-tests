@@ -3,6 +3,7 @@ package com.demoblaze.tests;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.demoblaze.utils.DriverFactory;
+import com.demoblaze.utils.PropertiesLoader;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -31,7 +32,7 @@ public class BaseTest {
     @BeforeMethod
     public void setup() throws IOException {
         driver = DriverFactory.getDriver();
-        driver.get("http://www.kurs-selenium.pl/demo/");
+        driver.get(PropertiesLoader.loadProperty("browser.url"));
         driver.manage().window().maximize();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         js = (JavascriptExecutor) driver;
