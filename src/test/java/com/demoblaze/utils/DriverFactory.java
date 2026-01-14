@@ -3,7 +3,9 @@ package com.demoblaze.utils;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.io.IOException;
 
@@ -11,12 +13,24 @@ public class DriverFactory {
 
     public static WebDriver getDriver() throws IOException {
         String name = PropertiesLoader.loadProperty("browser.name");
-        if (name.equals("firefox")) {
+        boolean headless = Boolean.parseBoolean(System.getProperty("headless", "false"));
+        if (name.equalsIgnoreCase("firefox")) {
             WebDriverManager.firefoxdriver().setup();
-            return new FirefoxDriver();
+            FirefoxOptions options = new FirefoxOptions();
+            if (headless) {
+                options.addArguments("-headless");
+                options.addArguments("--width=1920");
+                options.addArguments("--height=1080");
+            }
+            return new FirefoxDriver(options);
         } else {
             WebDriverManager.chromedriver().setup();
-            return new ChromeDriver();
+            ChromeOptions options = new ChromeOptions();
+            if (headless) {
+                options.addArguments("-headless=new");
+                options.addArguments("--window-size=1920,1080");
+            }
+            return new ChromeDriver(options);
         }
     }
 }

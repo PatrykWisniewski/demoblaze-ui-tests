@@ -1,6 +1,7 @@
 package com.demoblaze.pages;
 
 import com.demoblaze.utils.SeleniumHelper;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -27,6 +28,8 @@ public class HomePage {
     @FindBy(xpath = "//div[@class='list-group']/a[@id='itemc']")
     private List<WebElement> categoryItems;
 
+    private final By products = By.xpath("//div[@id='tbodyid']//a[@class='hrefch']");
+
     public WebElement getLogo() {
         SeleniumHelper.elementVisible(driver, logo);
         return logo;
@@ -47,5 +50,22 @@ public class HomePage {
         return categoryItems.stream()
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
+    }
+
+    public void categoryClick(String category) {
+        String xpath = String.format("//a[contains(text(), '%s')]", category);
+        SeleniumHelper.click(driver, By.xpath(xpath));
+    }
+
+    public List<String> getProductsListNames() {
+        SeleniumHelper.elementsVisible(driver, products);
+        List<WebElement> productElements = driver.findElements(products);
+        return productElements.stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+    }
+
+    public WebElement getFirstProductElement() {
+        return driver.findElements(products).get(0);
     }
 }

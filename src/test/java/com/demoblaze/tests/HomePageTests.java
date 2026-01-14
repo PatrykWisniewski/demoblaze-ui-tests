@@ -3,6 +3,8 @@ package com.demoblaze.tests;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.demoblaze.pages.HomePage;
+import com.demoblaze.utils.SeleniumHelper;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -35,5 +37,25 @@ public class HomePageTests extends BaseTest {
         Assert.assertTrue(categories.contains("Laptops"));
         Assert.assertTrue(categories.contains("Monitors"));
         test.log(Status.PASS, "Category list contains expected category names");
+    }
+
+    @Test
+    public void categoryListChangeTest() {
+        ExtentTest test = extentReports.createTest("Category list change verification");
+        HomePage homePage = new HomePage(driver);
+
+        homePage.categoryClick("Phones");
+        List<String> phonesProducts = homePage.getProductsListNames();
+
+        WebElement oldProduct = homePage.getFirstProductElement();
+
+        homePage.categoryClick("Laptops");
+        SeleniumHelper.waitForStaleness(driver, oldProduct);
+        List<String> laptopsProducts = homePage.getProductsListNames();
+
+        Assert.assertNotEquals(phonesProducts, laptopsProducts);
+        Assert.assertTrue(laptopsProducts.contains("MacBook air"));
+        Assert.assertFalse(laptopsProducts.contains("Samsung galaxy s6"));
+        test.log(Status.PASS, "The product list has changed");
     }
 }
