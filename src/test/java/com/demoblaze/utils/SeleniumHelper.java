@@ -30,6 +30,15 @@ public class SeleniumHelper {
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
     }
 
+    public static void click(WebDriver driver, By locator) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).click();
+    }
+
+    public static void waitForStaleness(WebDriver driver, WebElement element) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.stalenessOf(element));
+    }
 
     public static Media getScreenshot(WebDriver driver) throws IOException {
         int randomNumber = (int) (Math.random() * 1000);
@@ -39,4 +48,5 @@ public class SeleniumHelper {
         FileUtils.copyFile(source, new File(path));
         return MediaEntityBuilder.createScreenCaptureFromPath(path).build();
     }
+
 }
