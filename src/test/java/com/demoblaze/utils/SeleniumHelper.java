@@ -25,19 +25,35 @@ public class SeleniumHelper {
         wait.until(ExpectedConditions.visibilityOfAllElements(list));
     }
 
+    public static void elementsVisible(WebDriver driver, WebElement... elements) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfAllElements(elements));
+    }
+
     public static void elementsVisible(WebDriver driver, By locator) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
     }
 
-    public static void click(WebDriver driver, By locator) {
+
+    public static void clickWhenVisible(WebDriver driver, By locator) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).click();
+    }
+
+    public static void clickWhenVisible(WebDriver driver, WebElement element) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(element)).click();
     }
 
     public static void waitForStaleness(WebDriver driver, WebElement element) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.stalenessOf(element));
+    }
+
+    public static void waitForAlert(WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.alertIsPresent());
     }
 
     public static Media getScreenshot(WebDriver driver) throws IOException {

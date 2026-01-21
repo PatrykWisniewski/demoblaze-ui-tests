@@ -8,13 +8,12 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
 import java.util.List;
 
 public class HomePageTests extends BaseTest {
 
     @Test
-    public void logoVisibilityTest() throws IOException {
+    public void logoVisibilityTest() {
         ExtentTest test = extentReports.createTest("Logo visibility test");
         HomePage homePage = new HomePage(driver);
 
@@ -50,7 +49,7 @@ public class HomePageTests extends BaseTest {
         WebElement oldProduct = homePage.getFirstProductElement();
 
         homePage.categoryClick("Laptops");
-        SeleniumHelper.waitForStaleness(driver, oldProduct);
+        SeleniumHelper.waitForStaleness(driver, oldProduct); // Wait for AJAX-loaded product list to be replaced in the DOM
         List<String> laptopsProducts = homePage.getProductsListNames();
 
         Assert.assertNotEquals(phonesProducts, laptopsProducts);
