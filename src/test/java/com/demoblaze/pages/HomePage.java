@@ -25,10 +25,10 @@ public class HomePage {
     @FindBy(className = "list-group")
     private WebElement categoryList;
 
-    @FindBy(xpath = "//div[@class='list-group']/a[@id='itemc']")
+    @FindBy(css = ".list-group a#itemc")
     private List<WebElement> categoryItems;
 
-    private final By products = By.xpath("//div[@id='tbodyid']//a[@class='hrefch']");
+    private final By products = By.cssSelector("#tbodyid .card-title");
 
     public WebElement getLogo() {
         SeleniumHelper.elementVisible(driver, logo);
@@ -52,9 +52,10 @@ public class HomePage {
                 .collect(Collectors.toList());
     }
 
-    public void categoryClick(String category) {
+    public HomePage categoryClick(String category) {
         String xpath = String.format("//a[contains(text(), '%s')]", category);
-        SeleniumHelper.click(driver, By.xpath(xpath));
+        SeleniumHelper.clickWhenVisible(driver, By.xpath(xpath));
+        return this;
     }
 
     public List<String> getProductsListNames() {
@@ -67,5 +68,11 @@ public class HomePage {
 
     public WebElement getFirstProductElement() {
         return driver.findElements(products).get(0);
+    }
+
+    public ProductPage productSelect(String product) {
+        String xpath = String.format("//a[contains(text(), '%s')]", product);
+        SeleniumHelper.clickWhenVisible(driver, By.xpath(xpath));
+        return new ProductPage(driver);
     }
 }
