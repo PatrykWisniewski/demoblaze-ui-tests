@@ -12,6 +12,10 @@ public class PropertiesLoader {
         Properties properties = new Properties();
         properties.load(inputStream);
         return properties.getProperty(propertyName);
+    }
 
+    public static String getBaseUrl() throws IOException {
+        String env = loadProperty("env");
+        return loadProperty(env + ".url");
     }
 }

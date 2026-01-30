@@ -1,6 +1,7 @@
 package com.demoblaze.pages;
 
 import com.demoblaze.utils.SeleniumHelper;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -15,10 +16,10 @@ public class CartPage {
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy(id = "totalm")
-    private WebElement placeOrderModal;
+    @FindBy(css = "#orderModal")
+    private WebElement orderModal;
 
-    @FindBy(css = ".btn-success")
+    @FindBy(xpath = "//button[text()='Place Order']")
     private WebElement placeOrderButton;
 
     @FindBy(id = "name")
@@ -42,7 +43,7 @@ public class CartPage {
     @FindBy(css = "button[onclick='purchaseOrder()']")
     private WebElement purchaseButton;
 
-    @FindBy(xpath = "//h2[contains(text(), 'Thank you for your purchase!')]")
+    @FindBy(css = ".sweet-alert h2")
     private WebElement successModal;
 
     public CartPage placeOrderClick() {
@@ -51,7 +52,7 @@ public class CartPage {
     }
 
     public CartPage formFill(String name, String country, String city, String creditCard, String month, String year) {
-        SeleniumHelper.elementVisible(driver, placeOrderModal);
+        SeleniumHelper.elementVisible(driver, orderModal);
         nameInput.sendKeys(name);
         countryInput.sendKeys(country);
         cityInput.sendKeys(city);
@@ -70,5 +71,8 @@ public class CartPage {
         return successModal;
     }
 
+    public WebElement getOrderModal() {
+        return orderModal;
+    }
 
 }
