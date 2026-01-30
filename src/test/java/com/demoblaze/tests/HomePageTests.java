@@ -29,9 +29,12 @@ public class HomePageTests extends BaseTest {
 
         Assert.assertTrue(homePage.getCategoryList().isDisplayed(), "Category list is not displayed!");
         test.log(Status.PASS, "Category list is displayed");
+
         Assert.assertEquals(homePage.getCategoryListSize(), expectedCategoryListSize);
-        test.log(Status.PASS, "Category list contains expected number of 3 elements");
+        test.log(Status.PASS, "Category list contains expected number of " + expectedCategoryListSize + " elements");
+
         List<String> categories = homePage.getCategoryListNames();
+
         Assert.assertTrue(categories.contains("Phones"));
         Assert.assertTrue(categories.contains("Laptops"));
         Assert.assertTrue(categories.contains("Monitors"));

@@ -18,7 +18,6 @@ import java.time.Duration;
 public class BaseTest {
     protected WebDriver driver;
     protected WebDriverWait wait;
-    protected JavascriptExecutor js;
     protected static ExtentSparkReporter htmlReporter;
     protected static ExtentReports extentReports;
 
@@ -31,11 +30,11 @@ public class BaseTest {
 
     @BeforeMethod
     public void setup() throws IOException {
+        String env = PropertiesLoader.loadProperty("env");
         driver = DriverFactory.getDriver();
-        driver.get(PropertiesLoader.loadProperty("browser.url"));
+        driver.get(PropertiesLoader.getBaseUrl());
         driver.manage().window().maximize();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        js = (JavascriptExecutor) driver;
     }
 
     @AfterMethod

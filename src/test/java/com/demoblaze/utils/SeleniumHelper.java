@@ -56,6 +56,12 @@ public class SeleniumHelper {
         wait.until(ExpectedConditions.alertIsPresent());
     }
 
+    public static Alert waitForgetAlert(WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.alertIsPresent());
+        return driver.switchTo().alert();
+    }
+
     public static Media getScreenshot(WebDriver driver) throws IOException {
         int randomNumber = (int) (Math.random() * 1000);
         TakesScreenshot screenshot = (TakesScreenshot) driver;
