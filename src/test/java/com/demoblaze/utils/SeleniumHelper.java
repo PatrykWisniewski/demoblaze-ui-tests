@@ -56,7 +56,7 @@ public class SeleniumHelper {
         wait.until(ExpectedConditions.alertIsPresent());
     }
 
-    public static Alert waitForgetAlert(WebDriver driver) {
+    public static Alert waitForAndGetAlert(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.alertIsPresent());
         return driver.switchTo().alert();

@@ -54,7 +54,7 @@ public class CartPageTests extends BaseTest {
                 .placeOrderClick()
                 .purchaseClick();
 
-        Alert errorAlert = SeleniumHelper.waitForgetAlert(driver);
+        Alert errorAlert = SeleniumHelper.waitForAndGetAlert(driver);
 
         test.log(Status.PASS, "Error alert displays");
 
