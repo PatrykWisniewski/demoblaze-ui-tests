@@ -29,6 +29,6 @@ mvn test
 ## Design Decisions
 - Page Object Pattern used to separate test logic from UI interactions.
 - Explicit waits preferred over implicit waits to reduce flaky tests.
-- `stalenessOf` used for category switching due to AJAX-based content replacement.
+- Method chaining applied in Page Object classes to improve test readability and express user flows more clearly.
 
 This project is intended for learning purposes and demonstrates good practices in UI test automation.
