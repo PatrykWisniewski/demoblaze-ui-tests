@@ -1,6 +1,8 @@
 package com.demoblaze.pages;
 
 import com.demoblaze.utils.SeleniumHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,6 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 public class ProductPage {
 
     private WebDriver driver;
+    private static final Logger logger = LogManager.getLogger(ProductPage.class);
 
     public ProductPage(WebDriver driver) {
         this.driver = driver;
@@ -24,6 +27,7 @@ public class ProductPage {
 
     public ProductPage addToCart() {
         SeleniumHelper.clickWhenVisible(driver, addToCartButton);
+        logger.info("Adding product to cart");
         return this;
     }
 
@@ -32,12 +36,13 @@ public class ProductPage {
             SeleniumHelper.waitForAlert(driver);
             driver.switchTo().alert().accept();
         } catch (TimeoutException e) {
-            // alert did not appear – acceptable state
+           logger.warn("Expected add-to-cart alert did not appear"); // acceptable state
         }
         return this;
     }
 
     public CartPage cartTabSelect() {
+        logger.info("Selecting Cart tab");
         SeleniumHelper.clickWhenVisible(driver, cartTab);
         return new CartPage(driver);
     }

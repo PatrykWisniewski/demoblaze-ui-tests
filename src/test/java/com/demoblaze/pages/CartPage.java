@@ -1,6 +1,8 @@
 package com.demoblaze.pages;
 
 import com.demoblaze.utils.SeleniumHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,6 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 public class CartPage {
 
     private WebDriver driver;
+    private static final Logger logger = LogManager.getLogger(CartPage.class);
 
     public CartPage(WebDriver driver) {
         this.driver = driver;
@@ -47,6 +50,7 @@ public class CartPage {
     private WebElement successModal;
 
     public CartPage placeOrderClick() {
+        logger.info("Clicking Place Order button");
         SeleniumHelper.clickWhenVisible(driver, placeOrderButton);
         return this;
     }
@@ -59,11 +63,13 @@ public class CartPage {
         creditCardInput.sendKeys(creditCard);
         monthInput.sendKeys(month);
         yearInput.sendKeys(year);
+        logger.debug("Filling form with following data (Credit Card data hidden): name={}, country={}, city={}", name, country, city);
         return this;
     }
 
     public CartPage purchaseClick() {
         SeleniumHelper.clickWhenVisible(driver, purchaseButton);
+        logger.info("Clicking Purchase button");
         return this;
     }
 

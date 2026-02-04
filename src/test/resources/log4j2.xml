@@ -6,6 +6,16 @@
         </Console>
     </Appenders>
     <Loggers>
+        <Logger name="com.demoblaze" level="DEBUG" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+        <Logger name="org.apache.hc" level="WARN"/>
+
+        <Logger name="org.openqa.selenium" level="WARN"/>
+
+        <Logger name="io.github.bonigarcia" level="WARN"/>
+
         <Root level="INFO">
             <AppenderRef ref="console"/>
         </Root>

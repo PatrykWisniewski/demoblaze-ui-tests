@@ -1,6 +1,8 @@
 package com.demoblaze.pages;
 
 import com.demoblaze.utils.SeleniumHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 public class HomePage {
 
     private WebDriver driver;
+    private static final Logger logger = LogManager.getLogger(HomePage.class);
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
@@ -42,28 +45,35 @@ public class HomePage {
 
     public int getCategoryListSize() {
         SeleniumHelper.elementsVisible(driver, categoryItems);
-        return categoryItems.size();
+        int size = categoryItems.size();
+        logger.debug("Category list size: {}", size);
+        return size;
     }
 
     public List<String> getCategoryListNames() {
         SeleniumHelper.elementsVisible(driver, categoryItems);
-        return categoryItems.stream()
+        List<String> names = categoryItems.stream()
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
+        logger.debug("Category list names: {}", names);
+        return names;
     }
 
     public HomePage categoryClick(String category) {
         String xpath = String.format("//a[contains(text(), '%s')]", category);
         SeleniumHelper.clickWhenVisible(driver, By.xpath(xpath));
+        logger.info("Category click: {}", category);
         return this;
     }
 
     public List<String> getProductsListNames() {
         SeleniumHelper.elementsVisible(driver, products);
         List<WebElement> productElements = driver.findElements(products);
-        return productElements.stream()
+        List<String> names = productElements.stream()
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
+        logger.debug("Product list names: {}", names);
+        return names;
     }
 
     public WebElement getFirstProductElement() {
@@ -73,6 +83,7 @@ public class HomePage {
     public ProductPage productSelect(String product) {
         String xpath = String.format("//a[contains(text(), '%s')]", product);
         SeleniumHelper.clickWhenVisible(driver, By.xpath(xpath));
+        logger.info("Selecting product: {}", product);
         return new ProductPage(driver);
     }
 }

@@ -31,7 +31,7 @@ public class HomePageTests extends BaseTest {
         test.log(Status.PASS, "Category list is displayed");
 
         Assert.assertEquals(homePage.getCategoryListSize(), expectedCategoryListSize);
-        test.log(Status.PASS, "Category list contains expected number of " + expectedCategoryListSize + " elements");
+        test.log(Status.PASS, String.format("Category list contains expected number of %s elements", expectedCategoryListSize));
 
         List<String> categories = homePage.getCategoryListNames();
 
