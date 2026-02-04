@@ -50,6 +50,10 @@ public class HomePage {
         return size;
     }
 
+    public By getProducts() {
+        return products;
+    }
+
     public List<String> getCategoryListNames() {
         SeleniumHelper.elementsVisible(driver, categoryItems);
         List<String> names = categoryItems.stream()
