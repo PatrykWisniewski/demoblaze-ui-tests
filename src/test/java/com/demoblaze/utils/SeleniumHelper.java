@@ -2,7 +2,10 @@ package com.demoblaze.utils;
 
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.model.Media;
+import com.demoblaze.pages.HomePage;
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -14,6 +17,7 @@ import java.util.List;
 
 public class SeleniumHelper {
 
+    private static final Logger logger = LogManager.getLogger(SeleniumHelper.class);
 
     public static void elementVisible(WebDriver driver, WebElement element) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -49,6 +53,19 @@ public class SeleniumHelper {
     public static void waitForStaleness(WebDriver driver, WebElement element) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.stalenessOf(element));
+    }
+
+    public static void waitForAnyElementWithText(WebDriver driver, By locator, String text) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(d -> {
+            try {
+                return d.findElements(locator).stream()
+                        .anyMatch(el -> el.getText().toLowerCase().contains(text));
+            } catch (StaleElementReferenceException e) {
+                logger.debug("DOM is rebuilding, retry");
+                return false;
+            }
+        });
     }
 
     public static void waitForAlert(WebDriver driver) {

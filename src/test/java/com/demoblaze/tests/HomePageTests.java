@@ -53,10 +53,11 @@ public class HomePageTests extends BaseTest {
 
         homePage.categoryClick("Laptops");
         SeleniumHelper.waitForStaleness(driver, oldProduct); // Wait for AJAX-loaded product list to be replaced in the DOM
+        SeleniumHelper.waitForAnyElementWithText(driver, homePage.getProducts(), "sony");
         List<String> laptopsProducts = homePage.getProductsListNames();
 
         Assert.assertNotEquals(phonesProducts, laptopsProducts);
-        Assert.assertTrue(laptopsProducts.contains("MacBook air"));
+        Assert.assertTrue(laptopsProducts.contains("Sony vaio i5"));
         Assert.assertFalse(laptopsProducts.contains("Samsung galaxy s6"));
         test.log(Status.PASS, "The product list has changed");
     }
