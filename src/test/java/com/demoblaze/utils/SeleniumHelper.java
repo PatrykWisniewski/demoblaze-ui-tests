@@ -1,8 +1,5 @@
 package com.demoblaze.utils;
 
-import com.aventstack.extentreports.MediaEntityBuilder;
-import com.aventstack.extentreports.model.Media;
-import com.demoblaze.pages.HomePage;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -79,13 +76,15 @@ public class SeleniumHelper {
         return driver.switchTo().alert();
     }
 
-    public static Media getScreenshot(WebDriver driver) throws IOException {
-        int randomNumber = (int) (Math.random() * 1000);
+    public static String getScreenshot(WebDriver driver) throws IOException {
+        String fileName = "screenshot_" + System.currentTimeMillis() + ".png";
+        String path = "screenshots/" + fileName;
+
         TakesScreenshot screenshot = (TakesScreenshot) driver;
         File source = screenshot.getScreenshotAs(OutputType.FILE);
-        String path = "src/test/resources/screenshots/screenshot" + randomNumber + ".png";
-        FileUtils.copyFile(source, new File(path));
-        return MediaEntityBuilder.createScreenCaptureFromPath(path).build();
+        FileUtils.copyFile(source, new File("target/" + path));
+
+        return path;
     }
 
 }
