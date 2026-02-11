@@ -38,6 +38,11 @@ public class HomePage {
         return logo;
     }
 
+    public HomePage logoClick() {
+        SeleniumHelper.clickWhenVisible(driver, logo);
+        return new HomePage(driver);
+    }
+
     public WebElement getCategoryList() {
         SeleniumHelper.elementVisible(driver, categoryList);
         return categoryList;
