@@ -4,6 +4,7 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.demoblaze.pages.CartPage;
 import com.demoblaze.pages.HomePage;
+import com.demoblaze.pages.ProductPage;
 import com.demoblaze.utils.SeleniumHelper;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebElement;
@@ -71,5 +72,30 @@ public class CartPageTests extends BaseTest {
         test.log(Status.PASS, "Order modal is still displayed as expected");
     }
 
+    @Test
+    public void totalPriceValidation() {
+        HomePage homePage = new HomePage(driver);
+        ProductPage firstProduct = homePage.productSelect("Samsung galaxy s6");
+
+        int firstProductPrice = firstProduct.getProductPrice();
+
+        firstProduct.addToCart();
+        firstProduct.alertAccept();
+
+        homePage = firstProduct.logoClick();
+
+        ProductPage secondProduct = homePage.productSelect("Nokia lumia 1520");
+
+        int secondProductPrice = secondProduct.getProductPrice();
+        int expectedTotal = firstProductPrice+secondProductPrice;
+
+        secondProduct.addToCart();
+        secondProduct.alertAccept();
+
+        CartPage cartPage = secondProduct.cartTabSelect();
+
+        Assert.assertEquals(cartPage.getTotalPrice(), expectedTotal, "The Cart displays incorrect total price!");
+
+    }
 
 }

@@ -19,11 +19,17 @@ public class ProductPage {
         PageFactory.initElements(driver, this);
     }
 
+    @FindBy(id = "nava")
+    private WebElement logo;
+
     @FindBy(css = ".row .btn-success")
     private WebElement addToCartButton;
 
     @FindBy(id = "cartur")
     private WebElement cartTab;
+
+    @FindBy(className = "price-container")
+    private WebElement productPrice;
 
     public ProductPage addToCart() {
         SeleniumHelper.clickWhenVisible(driver, addToCartButton);
@@ -45,6 +51,19 @@ public class ProductPage {
         logger.info("Selecting Cart tab");
         SeleniumHelper.clickWhenVisible(driver, cartTab);
         return new CartPage(driver);
+    }
+
+    public int getProductPrice() {
+        SeleniumHelper.elementVisible(driver, productPrice);
+        String priceText = productPrice.getText();
+        String clearPrice = priceText.replaceAll("[^0-9]", "");
+        logger.debug("Product price: {}", clearPrice);
+        return Integer.parseInt(clearPrice);
+    }
+
+    public HomePage logoClick() {
+        SeleniumHelper.clickWhenVisible(driver, logo);
+        return new HomePage(driver);
     }
 
 }

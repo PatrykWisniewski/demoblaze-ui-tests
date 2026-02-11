@@ -49,6 +49,9 @@ public class CartPage {
     @FindBy(css = ".sweet-alert h2")
     private WebElement successModal;
 
+    @FindBy(id = "totalp")
+    private WebElement totalPrice;
+
     public CartPage placeOrderClick() {
         logger.info("Clicking Place Order button");
         SeleniumHelper.clickWhenVisible(driver, placeOrderButton);
@@ -74,11 +77,20 @@ public class CartPage {
     }
 
     public WebElement getSuccessModal() {
+        SeleniumHelper.elementVisible(driver, successModal);
         return successModal;
     }
 
     public WebElement getOrderModal() {
+        SeleniumHelper.elementVisible(driver, orderModal);
         return orderModal;
     }
 
+    public int getTotalPrice() {
+        SeleniumHelper.elementVisible(driver, totalPrice);
+        String priceText = totalPrice.getText();
+        int price = Integer.parseInt(priceText);
+        logger.debug("total price: {}", price);
+        return price;
+    }
 }
