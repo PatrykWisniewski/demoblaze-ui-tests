@@ -31,6 +31,8 @@ public class HomePage {
     @FindBy(css = ".list-group a#itemc")
     private List<WebElement> categoryItems;
 
+
+
     private final By products = By.cssSelector("#tbodyid .card-title");
 
     public WebElement getLogo() {

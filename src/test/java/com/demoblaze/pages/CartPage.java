@@ -4,6 +4,7 @@ import com.demoblaze.utils.SeleniumHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -52,6 +53,10 @@ public class CartPage {
     @FindBy(id = "totalp")
     private WebElement totalPrice;
 
+    private By getDeleteLocator(String product) {
+        return By.xpath(String.format("//tr[td[text()='%s']]//a", product));
+    }
+
     public CartPage placeOrderClick() {
         logger.info("Clicking Place Order button");
         SeleniumHelper.clickWhenVisible(driver, placeOrderButton);
@@ -92,5 +97,17 @@ public class CartPage {
         int price = Integer.parseInt(priceText);
         logger.debug("total price: {}", price);
         return price;
+    }
+
+    public WebElement getDeleteButton(String product) {
+        SeleniumHelper.elementsVisible(driver, getDeleteLocator(product));
+        return driver.findElement(getDeleteLocator(product));
+    }
+
+
+    public CartPage deleteClick(String product) {
+        SeleniumHelper.clickWhenVisible(driver, getDeleteLocator(product));
+        logger.info("Product deleting: {}", product);
+        return this;
     }
 }
