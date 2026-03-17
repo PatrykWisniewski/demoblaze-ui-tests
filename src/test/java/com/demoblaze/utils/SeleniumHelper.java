@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SeleniumHelper {
 
@@ -59,9 +60,27 @@ public class SeleniumHelper {
                 return d.findElements(locator).stream()
                         .anyMatch(el -> el.getText().toLowerCase().contains(text));
             } catch (StaleElementReferenceException e) {
-                logger.debug("DOM is rebuilding, retry");
+                logger.debug("DOM is rebuilding, retry, retrying..");
                 return false;
             }
+        });
+    }
+
+    public static void waitForListToChange(WebDriver driver, List<String> oldList, By locator) {
+        // Waits until product list changes after AJAX category update
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        wait.until(driver1 -> {
+           try {
+               List<String> newList = driver.findElements(locator)
+                       .stream()
+                       .map(WebElement::getText)
+                       .toList();
+               return !(oldList.equals(newList));
+           } catch (StaleElementReferenceException e) {
+               logger.debug("Dom is rebuilding, retrying..");
+               return false;
+           }
         });
     }
 

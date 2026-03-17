@@ -45,15 +45,15 @@ public class HomePageTests extends BaseTest {
     public void categoryListChangeTest() {
         ExtentTest test = extentReports.createTest("Category list change verification");
         HomePage homePage = new HomePage(driver);
+        List<String> currentProductsList = homePage.getProductsListNames();
+
 
         homePage.categoryClick("Phones");
+        SeleniumHelper.waitForListToChange(driver, currentProductsList, homePage.getProductsLocator()); // Wait for AJAX-loaded list to be replaced in the DOM
         List<String> phonesProducts = homePage.getProductsListNames();
 
-        WebElement oldProduct = homePage.getFirstProductElement();
-
         homePage.categoryClick("Laptops");
-        SeleniumHelper.waitForStaleness(driver, oldProduct); // Wait for AJAX-loaded product list to be replaced in the DOM
-        SeleniumHelper.waitForAnyElementWithText(driver, homePage.getProducts(), "sony");
+        SeleniumHelper.waitForListToChange(driver, phonesProducts, homePage.getProductsLocator());
         List<String> laptopsProducts = homePage.getProductsListNames();
 
         Assert.assertNotEquals(phonesProducts, laptopsProducts);

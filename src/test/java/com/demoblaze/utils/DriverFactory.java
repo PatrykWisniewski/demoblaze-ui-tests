@@ -13,7 +13,7 @@ public class DriverFactory {
 
     public static WebDriver getDriver() throws IOException {
         String name = PropertiesLoader.loadProperty("browser.name");
-        boolean headless = Boolean.parseBoolean(System.getProperty("headless", "false"));
+        boolean headless = Boolean.parseBoolean(System.getProperty("headless", "true"));
         if (name.equalsIgnoreCase("firefox")) {
             WebDriverManager.firefoxdriver().setup();
             FirefoxOptions options = new FirefoxOptions();
