@@ -57,7 +57,7 @@ public class HomePage {
         return size;
     }
 
-    public By getProducts() {
+    public By getProductsLocator() {
         return products;
     }
 
