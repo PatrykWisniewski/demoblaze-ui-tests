@@ -10,6 +10,8 @@
             <AppenderRef ref="console"/>
         </Logger>
 
+        <Logger name="org.apache.hc.client5.http.wire" level="ERROR"/>
+
         <Logger name="org.apache.hc" level="WARN"/>
         <Logger name="org.openqa.selenium" level="WARN"/>
         <Logger name="io.github.bonigarcia" level="WARN"/>
