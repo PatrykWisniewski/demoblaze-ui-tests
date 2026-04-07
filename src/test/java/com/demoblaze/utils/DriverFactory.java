@@ -1,6 +1,8 @@
 package com.demoblaze.utils;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -9,11 +11,19 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.io.IOException;
 
+
+
 public class DriverFactory {
+
+
+    private static final Logger logger = LogManager.getLogger(DriverFactory.class);
 
     public static WebDriver getDriver() throws IOException {
         String name = PropertiesLoader.loadProperty("browser.name");
-        boolean headless = Boolean.parseBoolean(System.getProperty("headless", "true"));
+        boolean headless = Boolean.parseBoolean(System.getProperty("headless", "false"));
+        logger.info("Running in headless mode: {}", headless);
+        logger.info("Selected browser: {}", name);
+
         if (name.equalsIgnoreCase("firefox")) {
             WebDriverManager.firefoxdriver().setup();
             FirefoxOptions options = new FirefoxOptions();
