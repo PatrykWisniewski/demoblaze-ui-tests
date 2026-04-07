@@ -19,6 +19,16 @@ The tests are implemented for a demo e-commerce web application (Demoblaze).
 - Key user flows validation
 - Element visibility and navigation checks
 
+## Continuous Integration
+The project is integrated with GitHub Actions.  
+Tests are automatically executed on every pull request in a headless browser environment.
+
+The pipeline:
+- builds the project using Maven
+- runs UI tests in headless mode
+- generates test reports (Surefire + ExtentReports)
+- uploads reports as artifacts for further analysis
+
 ## How to Run Tests
 1. Clone the repository
 2. Run tests using Maven:
