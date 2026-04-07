@@ -21,7 +21,7 @@ public class BaseTest {
 
     @BeforeSuite
     public void beforeSuite() {
-        htmlReporter = new ExtentSparkReporter("index.html");
+        htmlReporter = new ExtentSparkReporter("target/extent-report/index.html");
         extentReports = new ExtentReports();
         extentReports.attachReporter(htmlReporter);
     }
