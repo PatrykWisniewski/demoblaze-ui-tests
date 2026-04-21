@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SeleniumHelper {
 
@@ -66,7 +65,7 @@ public class SeleniumHelper {
         });
     }
 
-    public static void waitForListToChange(WebDriver driver, List<String> oldList, By locator) {
+    public static void waitForStringListToChange(WebDriver driver, List<String> oldList, By locator) {
         // Waits until product list changes after AJAX category update
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 

@@ -49,16 +49,48 @@ public class HomePageTests extends BaseTest {
 
 
         homePage.categoryClick("Phones");
-        SeleniumHelper.waitForListToChange(driver, currentProductsList, homePage.getProductsLocator()); // Wait for AJAX-loaded list to be replaced in the DOM
+        SeleniumHelper.waitForStringListToChange(driver, currentProductsList, homePage.getProductsLocator()); // Wait for AJAX-loaded list to be replaced in the DOM
         List<String> phonesProducts = homePage.getProductsListNames();
 
         homePage.categoryClick("Laptops");
-        SeleniumHelper.waitForListToChange(driver, phonesProducts, homePage.getProductsLocator());
+        SeleniumHelper.waitForStringListToChange(driver, phonesProducts, homePage.getProductsLocator());
         List<String> laptopsProducts = homePage.getProductsListNames();
 
         Assert.assertNotEquals(phonesProducts, laptopsProducts);
         Assert.assertTrue(laptopsProducts.contains("Sony vaio i5"));
         Assert.assertFalse(laptopsProducts.contains("Samsung galaxy s6"));
         test.log(Status.PASS, "The product list has changed");
+    }
+
+    @Test
+    public void productImagesAppearance() {
+        ExtentTest test = extentReports.createTest("Product images appearance verification");
+        HomePage homePage = new HomePage(driver);
+        List <WebElement> defaultProductImages = homePage.getProductsImages();
+
+        Assert.assertTrue(homePage.ifImagesDisplayed(defaultProductImages));
+
+        List <String> defaultProductList = homePage.getProductsListNames();
+        homePage.categoryClick("Phones");
+        SeleniumHelper.waitForStringListToChange(driver, defaultProductList, homePage.getProductsLocator());
+
+        List <WebElement> phonesImages = homePage.getProductsImages();
+        Assert.assertTrue(homePage.ifImagesDisplayed(phonesImages));
+
+        List<String> phonesList = homePage.getProductsListNames();
+        homePage.categoryClick("Laptops");
+        SeleniumHelper.waitForStringListToChange(driver, phonesList, homePage.getProductsLocator());
+
+        List<WebElement> laptopImages = homePage.getProductsImages();
+        Assert.assertTrue(homePage.ifImagesDisplayed(laptopImages));
+
+        List<String> laptopList = homePage.getProductsListNames();
+        homePage.categoryClick("Monitors");
+        SeleniumHelper.waitForStringListToChange(driver, laptopList, homePage.getProductsLocator());
+
+        List<WebElement> monitorImages = homePage.getProductsImages();
+        Assert.assertTrue(homePage.ifImagesDisplayed(monitorImages));
+
+        test.log(Status.PASS, "Product images appear correctly");
     }
 }

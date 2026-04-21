@@ -32,8 +32,10 @@ public class HomePage {
     private List<WebElement> categoryItems;
 
 
-
     private final By products = By.cssSelector("#tbodyid .card-title");
+
+    private final By images = By.cssSelector(".card-img-top.img-fluid");
+
 
     public WebElement getLogo() {
         SeleniumHelper.elementVisible(driver, logo);
@@ -61,6 +63,10 @@ public class HomePage {
         return products;
     }
 
+    public By getImagesLocator() {
+        return images;
+    }
+
     public List<String> getCategoryListNames() {
         SeleniumHelper.elementsVisible(driver, categoryItems);
         List<String> names = categoryItems.stream()
@@ -75,6 +81,11 @@ public class HomePage {
         SeleniumHelper.clickWhenVisible(driver, By.xpath(xpath));
         logger.info("Category click: {}", category);
         return this;
+    }
+
+    public List<WebElement> getProductsImages() {
+        SeleniumHelper.elementsVisible(driver, images);
+        return driver.findElements(images);
     }
 
     public List<String> getProductsListNames() {
@@ -97,4 +108,15 @@ public class HomePage {
         logger.info("Selecting product: {}", product);
         return new ProductPage(driver);
     }
+
+    public boolean ifImagesDisplayed(List<WebElement> list) {
+        int index = 1;
+        for (WebElement webElement : list) {
+            logger.debug("Product " + index++ + " is displayed");
+            if (!webElement.isDisplayed()) {
+                return false;
+            }
+        } return true;
+    }
+
 }
