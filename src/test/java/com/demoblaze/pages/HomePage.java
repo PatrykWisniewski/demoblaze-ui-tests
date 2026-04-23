@@ -4,6 +4,7 @@ import com.demoblaze.utils.SeleniumHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -109,14 +110,17 @@ public class HomePage {
         return new ProductPage(driver);
     }
 
-    public boolean ifImagesDisplayed(List<WebElement> list) {
+    public boolean areAllImagesLoaded(List<WebElement> list) {
         int index = 1;
-        for (WebElement webElement : list) {
-            logger.debug("Product " + index++ + " is displayed");
-            if (!webElement.isDisplayed()) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        for (WebElement image : list) {
+            boolean loaded = (Boolean) js.executeScript("return arguments[0].complete && arguments[0].naturalWidth > 0", image);
+            logger.debug("Image {} is loaded: {}", index++, loaded);
+            if (!loaded) {
                 return false;
             }
-        } return true;
+        }
+        return true;
     }
 
 }

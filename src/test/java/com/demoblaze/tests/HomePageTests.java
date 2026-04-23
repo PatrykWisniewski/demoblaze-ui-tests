@@ -66,31 +66,21 @@ public class HomePageTests extends BaseTest {
     public void productImagesAppearance() {
         ExtentTest test = extentReports.createTest("Product images appearance verification");
         HomePage homePage = new HomePage(driver);
-        List <WebElement> defaultProductImages = homePage.getProductsImages();
+        String[] categories = {"Phones", "Laptops", "Monitors"};
 
-        Assert.assertTrue(homePage.ifImagesDisplayed(defaultProductImages));
+        List<WebElement> defaultProductImages = homePage.getProductsImages();
+        Assert.assertFalse(defaultProductImages.isEmpty(), "No images found for default category list");
+        Assert.assertTrue(homePage.areAllImagesLoaded(defaultProductImages), "Images are not fully loaded for default category list");
 
-        List <String> defaultProductList = homePage.getProductsListNames();
-        homePage.categoryClick("Phones");
-        SeleniumHelper.waitForStringListToChange(driver, defaultProductList, homePage.getProductsLocator());
+        for (String category : categories) {
+            List<String> previousProductsList = homePage.getProductsListNames();
 
-        List <WebElement> phonesImages = homePage.getProductsImages();
-        Assert.assertTrue(homePage.ifImagesDisplayed(phonesImages));
-
-        List<String> phonesList = homePage.getProductsListNames();
-        homePage.categoryClick("Laptops");
-        SeleniumHelper.waitForStringListToChange(driver, phonesList, homePage.getProductsLocator());
-
-        List<WebElement> laptopImages = homePage.getProductsImages();
-        Assert.assertTrue(homePage.ifImagesDisplayed(laptopImages));
-
-        List<String> laptopList = homePage.getProductsListNames();
-        homePage.categoryClick("Monitors");
-        SeleniumHelper.waitForStringListToChange(driver, laptopList, homePage.getProductsLocator());
-
-        List<WebElement> monitorImages = homePage.getProductsImages();
-        Assert.assertTrue(homePage.ifImagesDisplayed(monitorImages));
-
-        test.log(Status.PASS, "Product images appear correctly");
+            homePage.categoryClick(category);
+            SeleniumHelper.waitForStringListToChange(driver, previousProductsList, homePage.getProductsLocator());
+            List<WebElement> images = homePage.getProductsImages();
+            Assert.assertFalse(images.isEmpty(), "No images found for category: " + category);
+            Assert.assertTrue(homePage.areAllImagesLoaded(images), "Images are not fully loaded for category: " + category);
+        }
+        test.log(Status.PASS, "Product images display correctly");
     }
 }
