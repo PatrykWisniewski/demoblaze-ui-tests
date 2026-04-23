@@ -49,16 +49,38 @@ public class HomePageTests extends BaseTest {
 
 
         homePage.categoryClick("Phones");
-        SeleniumHelper.waitForListToChange(driver, currentProductsList, homePage.getProductsLocator()); // Wait for AJAX-loaded list to be replaced in the DOM
+        SeleniumHelper.waitForStringListToChange(driver, currentProductsList, homePage.getProductsLocator()); // Wait for AJAX-loaded list to be replaced in the DOM
         List<String> phonesProducts = homePage.getProductsListNames();
 
         homePage.categoryClick("Laptops");
-        SeleniumHelper.waitForListToChange(driver, phonesProducts, homePage.getProductsLocator());
+        SeleniumHelper.waitForStringListToChange(driver, phonesProducts, homePage.getProductsLocator());
         List<String> laptopsProducts = homePage.getProductsListNames();
 
         Assert.assertNotEquals(phonesProducts, laptopsProducts);
         Assert.assertTrue(laptopsProducts.contains("Sony vaio i5"));
         Assert.assertFalse(laptopsProducts.contains("Samsung galaxy s6"));
         test.log(Status.PASS, "The product list has changed");
+    }
+
+    @Test
+    public void productImagesAppearance() {
+        ExtentTest test = extentReports.createTest("Product images appearance verification");
+        HomePage homePage = new HomePage(driver);
+        String[] categories = {"Phones", "Laptops", "Monitors"};
+
+        List<WebElement> defaultProductImages = homePage.getProductsImages();
+        Assert.assertFalse(defaultProductImages.isEmpty(), "No images found for default category list");
+        Assert.assertTrue(homePage.areAllImagesLoaded(defaultProductImages), "Images are not fully loaded for default category list");
+
+        for (String category : categories) {
+            List<String> previousProductsList = homePage.getProductsListNames();
+
+            homePage.categoryClick(category);
+            SeleniumHelper.waitForStringListToChange(driver, previousProductsList, homePage.getProductsLocator());
+            List<WebElement> images = homePage.getProductsImages();
+            Assert.assertFalse(images.isEmpty(), "No images found for category: " + category);
+            Assert.assertTrue(homePage.areAllImagesLoaded(images), "Images are not fully loaded for category: " + category);
+        }
+        test.log(Status.PASS, "Product images display correctly");
     }
 }

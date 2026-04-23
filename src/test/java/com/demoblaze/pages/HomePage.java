@@ -4,6 +4,7 @@ import com.demoblaze.utils.SeleniumHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -32,8 +33,10 @@ public class HomePage {
     private List<WebElement> categoryItems;
 
 
-
     private final By products = By.cssSelector("#tbodyid .card-title");
+
+    private final By images = By.cssSelector(".card-img-top.img-fluid");
+
 
     public WebElement getLogo() {
         SeleniumHelper.elementVisible(driver, logo);
@@ -61,6 +64,10 @@ public class HomePage {
         return products;
     }
 
+    public By getImagesLocator() {
+        return images;
+    }
+
     public List<String> getCategoryListNames() {
         SeleniumHelper.elementsVisible(driver, categoryItems);
         List<String> names = categoryItems.stream()
@@ -75,6 +82,11 @@ public class HomePage {
         SeleniumHelper.clickWhenVisible(driver, By.xpath(xpath));
         logger.info("Category click: {}", category);
         return this;
+    }
+
+    public List<WebElement> getProductsImages() {
+        SeleniumHelper.elementsVisible(driver, images);
+        return driver.findElements(images);
     }
 
     public List<String> getProductsListNames() {
@@ -97,4 +109,18 @@ public class HomePage {
         logger.info("Selecting product: {}", product);
         return new ProductPage(driver);
     }
+
+    public boolean areAllImagesLoaded(List<WebElement> list) {
+        int index = 1;
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        for (WebElement image : list) {
+            boolean loaded = (Boolean) js.executeScript("return arguments[0].complete && arguments[0].naturalWidth > 0", image);
+            logger.debug("Image {} is loaded: {}", index++, loaded);
+            if (!loaded) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
