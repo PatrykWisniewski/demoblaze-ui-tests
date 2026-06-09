@@ -4,6 +4,7 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.demoblaze.pages.HomePage;
 import com.demoblaze.utils.SeleniumHelper;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -82,5 +83,24 @@ public class HomePageTests extends BaseTest {
             Assert.assertTrue(homePage.areAllImagesLoaded(images), "Images are not fully loaded for category: " + category);
         }
         test.log(Status.PASS, "Product images display correctly");
+    }
+
+    @Test
+    public void contactFormFunctionality() {
+        ExtentTest test = extentReports.createTest("Contact form functionality verification");
+
+        HomePage homePage = new HomePage(driver);
+        homePage.contactButtonClick();
+        homePage.contactFormFill("example@email.com", "Jan", "example message");
+        homePage.contactFormSend();
+
+        Alert confirmationAlert = SeleniumHelper.waitForAndGetAlert(driver);
+
+        Assert.assertEquals(confirmationAlert.getText(), "Thanks for the message!!", "Incorrect alert message displayed");
+
+        confirmationAlert.accept();
+
+        test.log(Status.PASS, "Contact Form functionality works as expected and displays proper message");
+
     }
 }
