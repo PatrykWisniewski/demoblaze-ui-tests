@@ -32,6 +32,21 @@ public class HomePage {
     @FindBy(css = ".list-group a#itemc")
     private List<WebElement> categoryItems;
 
+    @FindBy(xpath = "//a[text()='Contact']")
+    private WebElement contactButton;
+
+    @FindBy(id = "recipient-email")
+    private WebElement contactEmailField;
+
+    @FindBy(id = "recipient-name")
+    private WebElement contactNameField;
+
+    @FindBy(id = "message-text")
+    private WebElement contactMessageField;
+
+    @FindBy(xpath = "//button[text()='Send message']")
+    private WebElement contactSendMessageButton;
+
 
     private final By products = By.cssSelector("#tbodyid .card-title");
 
@@ -51,6 +66,10 @@ public class HomePage {
     public WebElement getCategoryList() {
         SeleniumHelper.elementVisible(driver, categoryList);
         return categoryList;
+    }
+
+    public void contactButtonClick() {
+        SeleniumHelper.clickWhenVisible(driver, contactButton);
     }
 
     public int getCategoryListSize() {
@@ -121,6 +140,17 @@ public class HomePage {
             }
         }
         return true;
+    }
+
+    public void contactFormFill(String email, String contactName, String message) {
+        SeleniumHelper.elementVisible(driver, contactEmailField);
+        contactEmailField.sendKeys(email);
+        contactNameField.sendKeys(contactName);
+        contactMessageField.sendKeys(message);
+    }
+
+    public void contactFormSend() {
+        SeleniumHelper.clickWhenVisible(driver, contactSendMessageButton);
     }
 
 }
