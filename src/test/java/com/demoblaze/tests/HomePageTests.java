@@ -38,7 +38,7 @@ public class HomePageTests extends BaseTest {
 
         Assert.assertTrue(categories.contains("Phones"));
         Assert.assertTrue(categories.contains("Laptops"));
-        Assert.assertTrue(categories.contains("Monitors"));
+        Assert.assertTrue(categories.contains("FailTest")); // Monitor
         test.log(Status.PASS, "Category list contains expected category names");
     }
 
